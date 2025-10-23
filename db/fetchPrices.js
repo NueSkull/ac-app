@@ -19,6 +19,7 @@ client.on('ready', () => {
 
     client.get(remotePath, (err, stream) => {
         if (err) {
+            console.log("ERRORRRR DOWNLOADDINGGG THE FILLEEEE")
             console.error('Error downloading file:', err);
             client.end();
             return;
