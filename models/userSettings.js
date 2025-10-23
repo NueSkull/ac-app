@@ -8,7 +8,7 @@ exports.retrieveSettings = async (userID) => {
 }
 
 exports.storeSettings = async (userID, updates) => {
-  const allowedUpdates = ['company_name', 'address_line_one', 'address_line_two', 'address_line_three', 'post_code', 'telephone']
+  const allowedUpdates = ['company_name', 'address_line_1', 'address_line_2', 'address_line_3', 'post_code', 'telephone']
 
   const updatesArr = [];
   const valuesArr = [userID]
