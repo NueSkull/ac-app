@@ -1,0 +1,31 @@
+{
+  "name": "ac-app",
+  "version": "1.0.0",
+  "description": "An app used to take user and price settings from one point, and populate another site using these details at another. Primarily built for the Shopify service.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NueSkull/ac-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "ftp": "^0.3.10",
+    "node-cron": "^4.2.1",
+    "pg": "^8.16.3",
+    "pg-format": "^1.0.4"
+  },
+  "bugs": {
+    "url": "https://github.com/NueSkull/ac-app/issues"
+  },
+  "homepage": "https://github.com/NueSkull/ac-app#readme"
+}
