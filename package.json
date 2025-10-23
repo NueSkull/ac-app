@@ -4,7 +4,8 @@
   "description": "An app used to take user and price settings from one point, and populate another site using these details at another. Primarily built for the Shopify service.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
