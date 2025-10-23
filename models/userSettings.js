@@ -2,7 +2,7 @@ const db = require("../db/connection");
 
 exports.retrieveSettings = async (userID) => {
   const result = await db.query(`
-    SELECT * FROM users WHERE user_id = $1;`,
+    SELECT * FROM users WHERE subdom = $1;`,
      [userID]);
   return result.rows[0];
 }
