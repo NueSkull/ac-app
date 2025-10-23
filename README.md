@@ -7,3 +7,7 @@ An app used to take user and price settings from one point, and populate another
 Requires PostgreSQL and Node
 
 https://trello.com/b/Qec678m3/apparel-catalogue-api
+
+
+
+### Work in progress, not to be used for production
