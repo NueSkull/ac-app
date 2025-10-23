@@ -30,7 +30,7 @@ exports.storeSettings = async (userID, updates) => {
   const query = `
     UPDATE users
     SET ${setClause}
-    WHERE user_id = $1
+    WHERE subdom = $1
     RETURNING *;
   `;
 
