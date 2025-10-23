@@ -3,9 +3,6 @@ const app = express();
 const cors = require("cors");
 const cron = require('node-cron')
 const {getUserSettings, storeSettings} = require("./controllers/userSettings")
-const {calcPrice} = require('./controllers/pricing')
-const {getStock} = require('./controllers/getStock')
-const {getPricing} = require('./controllers/getPricing')
 const {getStyleInfo} = require('./controllers/getStyleInfo')
 const fetchStock = require('./db/fetchStock')
 const fetchPrices = require('./db/fetchPrices')
@@ -20,9 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions))
 app.get("/api/settings/:userid", getUserSettings);
 app.patch("/api/set/:userid", storeSettings);
-app.get("/api/price", calcPrice);
-app.get("/api/stock/:sku", getStock);
-app.get("/api/pricing/:sku", getPricing);
 app.get("/api/styleinfo/:sku", getStyleInfo);
 
 app.all('/*path', (err, req, res, next) => {
