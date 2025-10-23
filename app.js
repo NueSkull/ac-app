@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const cron = require('node-cron')
 const {getUserSettings, storeSettings} = require("./controllers/userSettings")
+const {getStyleInfo} = require("./controllers/getStyleInfo")
 const fetchStock = require('./db/fetchStock')
 const fetchPrices = require('./db/fetchPrices')
 const allowedOrigins = /^https?:\/\/(?:.+\.)?apparel-catalogue\.co\.uk$/;
