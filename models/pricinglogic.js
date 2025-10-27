@@ -17,7 +17,8 @@ exports.getPricingF = async (subdom) => {
 };
 
 exports.updatePricingF = async (subdom, rules) => {
-    const client = await db.getClient();
+    // FIX: Changed db.getClient() to db.connect()
+    const client = await db.connect();
 
     try {
         await client.query('BEGIN');
@@ -38,7 +39,7 @@ exports.updatePricingF = async (subdom, rules) => {
                 rule.low_break,
                 rule.high_break,
                 rule.percentage,
-                rule.personalization || 0
+                rule.personalisation
             ]);
 
             const insertQuery = format(
@@ -65,4 +66,3 @@ exports.updatePricingF = async (subdom, rules) => {
         client.release();
     }
 };
-
