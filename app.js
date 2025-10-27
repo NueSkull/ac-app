@@ -18,7 +18,7 @@ app.use(cors(corsOptions))
 app.get("/api/settings/:userid", getUserSettings);
 app.patch("/api/set/:userid", storeSettings);
 app.get("/api/styleinfo/:sku", getStyleInfo);
-app.get("/api/getuser", getUser);
+app.get("/api/getuser/:ac", getUser);
 
 app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
