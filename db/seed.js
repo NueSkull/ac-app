@@ -19,8 +19,8 @@ async function seed() {
         customer VARCHAR NOT NULL REFERENCES users(subdom),
         type VARCHAR NOT NULL,
         brand VARCHAR,
-        low_break VARCHAR,
-        high_break VARCHAR,
+        low_break FLOAT,
+        high_break FLOAT,
         percentage INT, 
         personalisation FLOAT);`);
 
@@ -34,7 +34,7 @@ async function seed() {
     await db.query(`INSERT INTO user_lookup (c_account_number, subdom) VALUES ('EA051','marksempire');`)
 
     await db.query(`INSERT INTO pricing (customer, type, brand, low_break, high_break, percentage, personalisation) 
-        VALUES ('marksempire','Brand','Anthem',5,15,5,5),('marksempire','Price','',2.50,15.75,40,2),('marksempire','Qty','',1,10,30,0.00);`)
+        VALUES ('marksempire','Brand','Anthem',5,15,5,5),('marksempire','Price','',2.50,15.75,40,2.5),('marksempire','Qty','',1,10,30,0.00);`)
 
 }
 

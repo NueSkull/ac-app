@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions))
 app.get("/api/settings/:userid", getUserSettings);
 app.patch("/api/set/:userid", storeSettings);
-app.get("/api/styleinfo/:sku", getStyleInfo);
+app.get("/api/styleinfo/:sku/:brand", getStyleInfo);
 app.get("/api/getuser/:ac", getUser);
 app.get("/api/pricingrules/:ac", getPricing)
 app.post("/api/pricingrules/:ac", updatePricing);

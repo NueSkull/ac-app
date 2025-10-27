@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.getStyleInfo = async (sku) => {
+exports.getStyleInfo = async (sku, brand) => {
     console.log(`Style info request received for ${sku}`);
             const query = `
                 SELECT a.size_value, a.stock_level, p.price 

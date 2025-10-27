@@ -1,0 +1,596 @@
+<style>
+        body {
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        fieldset {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        legend {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 0 10px;
+            margin-left: 10px;
+    max-width: fit-content;
+    background: white;
+    border-radius: 5px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-grid div {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #333;
+        }
+        input[type="text"], input[type="number"], select {
+            width: 100%; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input:disabled, select:disabled {
+            background-color: #eee;
+            cursor: not-allowed;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top; 
+        }
+        th {
+            background-color: #f9f9f9;
+            font-size: 0.9em;
+        }
+        td input, td select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box; 
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background-color 0.2s;
+        }
+        #btnAddItem {
+            background-color: #28a745;
+            color: white;
+        }
+        #btnAddItem:hover {
+            background-color: #218838;
+        }
+        .btnDelete {
+            background-color: #D40021;
+            color: white;
+            width: 100%;
+            padding: 8px; 
+        }
+        .btnDelete:hover {
+            background-color: #b0001b;
+        }
+        #btnSubmitForm {
+            background-color: #005A9C;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+        }
+        #btnSubmitForm:hover {
+            background-color: #004a80;
+        }
+        #formMessage {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none; 
+            font-weight: bold;
+            text-align: center;
+        }
+        #formMessage.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        #formMessage.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .input-error {
+            border: 2px solid #D40021 !important; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1 style="text-align:center;">Apparel Catalogue Settings</h1>
+    
+    <form id="apiForm">
+        <div id="formMessage"></div>
+
+        <fieldset>
+            <legend>Catalogue Details</legend>
+            <div class="form-grid">
+                <div>
+                    <label for="company">Company name:</label>
+                    <input type="text" id="company" name="company">
+                </div>
+                 <div>
+                    <label for="telephone">Telephone:</label>
+                    <input type="text" id="telephone" name="telephone">
+                </div>
+                <div>
+                    <label for="address_l1">Address Line 1:</label>
+                    <input type="text" id="address_l1" name="address_l1">
+                </div>
+                <div>
+                    <label for="address_l2">Address Line 2:</label>
+                    <input type="text" id="address_l2" name="address_l2">
+                </div>
+                <div>
+                    <label for="address_l3">Address Line 3:</label>
+                    <input type="text" id="address_l3" name="address_l3">
+                </div>
+                <div>
+                    <label for="post_code">Post Code:</label>
+                    <input type="text" id="post_code" name="post_code">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Pricing Rules</legend>
+            <table id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Rule Type</th>
+                        <th>Brand</th>
+                        <th>Low</th>
+                        <th>High</th>
+                        <th>Markup (Percentage)</th>
+                        <th>Personalisation Cost</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="itemsTableBody">
+                </tbody>
+            </table>
+            <button type="button" id="btnAddItem">Add Rule Row</button>
+        </fieldset>
+        
+        <button type="submit" id="btnSubmitForm">Submit</button>
+
+    </form>
+
+    <template id="item-row-template">
+        <tr>
+            <td>
+                <select name="type">
+                    <option value="">--Select Type--</option>
+                    <option value="Brand">Brand</option>
+                    <option value="Price">Price</option>
+                    <option value="Qty">Qty</option>
+                </select>
+            </td>
+            <td>
+                <select name="brand" disabled>
+                    <option value="">--N/A--</option>
+                    <option value="2786">2786</option>
+<option value="Add It On">Add It On</option>
+<option value="Adidas">Adidas</option>
+<option value="Anthem">Anthem</option>
+<option value="Asquith & Fox">Asquith & Fox</option>
+<option value="AWDis">AWDis</option>
+<option value="AWDis Academy">AWDis Academy</option>
+<option value="AWDis Ecologie">AWDis Ecologie</option>
+<option value="AWDis Just Cool">AWDis Just Cool</option>
+<option value="AWDis Just Hoods">AWDis Just Hoods</option>
+<option value="AWDis Just Polo's">AWDis Just Polo's</option>
+<option value="AWDis So Denim">AWDis So Denim</option>
+<option value="AWDis Just T's">AWDis Just T's</option>
+<option value="B&C Collection">B&C Collection</option>
+<option value="BabyBugz">BabyBugz</option>
+<option value="BagBase">BagBase</option>
+<option value="Beechfield">Beechfield</option>
+<option value="Bella+Canvas">Bella+Canvas</option>
+<option value="Build Your Brand">Build Your Brand</option>
+<option value="Build Your Brand Basic">Build Your Brand Basic</option>
+<option value="Build Your Brandit">Build Your Brandit</option>
+<option value="Callaway">Callaway</option>
+<option value="Colortone">Colortone</option>
+<option value="Comfort Colors">Comfort Colors</option>
+<option value="Craghoppers Expert">Craghoppers Expert</option>
+<option value="Everyday Essentials">Everyday Essentials</option>
+<option value="Finden & Hales">Finden & Hales</option>
+<option value="Flexfit by Yupoong">Flexfit by Yupoong</option>
+<option value="Front Row">Front Row</option>
+<option value="Fruit of the Loom">Fruit of the Loom</option>
+<option value="Gamegear">Gamegear</option>
+<option value="Gildan">Gildan</option>
+<option value="Henbury">Henbury</option>
+<option value="Home & Living">Home & Living</option>
+<option value="Jack Wolfskin">Jack Wolfskin</option>
+<option value="Kariban">Kariban</option>
+<option value="Kariban Proact">Kariban Proact</option>
+<option value="KiMood">KiMood</option>
+<option value="Kodak">Kodak</option>
+<option value="Kustom Kit">Kustom Kit</option>
+<option value="Larkwood">Larkwood</option>
+<option value="Maddins">Maddins</option>
+<option value="Madeira">Madeira</option>
+<option value="MagiCut">MagiCut</option>
+<option value="Marketing Hub">Marketing Hub</option>
+<option value="Mumbles">Mumbles</option>
+<option value="New Era">New Era</option>
+<option value="New Morning Studios">New Morning Studios</option>
+<option value="Nike">Nike</option>
+<option value="Nimbus">Nimbus</option>
+<option value="Nutshell">Nutshell</option>
+<option value="OGIO">OGIO</option>
+<option value="Onna By Premier">Onna By Premier</option>
+<option value="Portwest">Portwest</option>
+<option value="Premier">Premier</option>
+<option value="Pro RTX">Pro RTX</option>
+<option value="Pro RTX High Visibility">Pro RTX High Visibility</option>
+<option value="Quadra">Quadra</option>
+<option value="RalaBundle">RalaBundle</option>
+<option value="RalaDeal - Outlet">RalaDeal - Outlet</option>
+<option value="RalaFlex">RalaFlex</option>
+<option value="Regatta High Visibility">Regatta High Visibility</option>
+<option value="Regatta Honestly Made">Regatta Honestly Made</option>
+<option value="Regatta Junior">Regatta Junior</option>
+<option value="Regatta Professional">Regatta Professional</option>
+<option value="Regatta Safety Footwear">Regatta Safety Footwear</option>
+<option value="Resolute Ink">Resolute Ink</option>
+<option value="Result">Result</option>
+<option value="Result Core">Result Core</option>
+<option value="Result Genuine Recycled">Result Genuine Recycled</option>
+<option value="Result Headwear">Result Headwear</option>
+<option value="Result Safeguard">Result Safeguard</option>
+<option value="Result Winter Essentials">Result Winter Essentials</option>
+<option value="Result Urban Outdoor">Result Urban Outdoor</option>
+<option value="Result Work-Guard">Result Work-Guard</option>
+<option value="Rhino">Rhino</option>
+<option value="Ribbon">Ribbon</option>
+<option value="Russell">Russell</option>
+<option value="Russell Collection">Russell Collection</option>
+<option value="Scruffs">Scruffs</option>
+<option value="SF Clothing">SF Clothing</option>
+<option value="Spiro">Spiro</option>
+<option value="Spiro Recycled">Spiro Recycled</option>
+<option value="Splashmacs">Splashmacs</option>
+<option value="Stanley / Stella">Stanley / Stella</option>
+<option value="Stanley Workwear">Stanley Workwear</option>
+<option value="Stormtech">Stormtech</option>
+<option value="The Christmas Shop">The Christmas Shop</option>
+<option value="Tee Jays">Tee Jays</option>
+<option value="TheMagicTouch">TheMagicTouch</option>
+<option value="Tombo">Tombo</option>
+<option value="Towel City">Towel City</option>
+<option value="TriDri®">TriDri®</option>
+<option value="Under Armour">Under Armour</option>
+<option value="Under Armour Golf">Under Armour Golf</option>
+<option value="Westford Mill">Westford Mill</option>
+<option value="Wombat">Wombat</option>
+<option value="Xpres">Xpres</option>
+<option value="Yoko">Yoko</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" name="low_break" step="1" placeholder="0" />
+            </td>
+            <td>
+                <input type="number" name="high_break" step="1" placeholder="0" />
+            </td>
+            <td>
+                <input type="number" name="percentage" step="0.01" placeholder="0" />
+            </td>
+            <td>
+                <input type="number" name="personalisation" step="0.01" placeholder="0.00" value="0.00" />
+            </td>
+            <td>
+                <button type="button" class="btnDelete">Delete</button>
+            </td>
+        </tr>
+    </template>
+
+    <script>
+    (function($) {
+        let subdom = ''; 
+
+        function showFormMessage(message, type) {
+            const $messageArea = $('#formMessage');
+            $messageArea.text(message)
+                        .removeClass('success error')
+                        .addClass(type)
+                        .show();
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        }
+
+        function hideFormMessage() {
+            $('#formMessage').hide();
+        }
+
+        function addPricingRow(rule = null) {
+            var template = $('#item-row-template').html();
+            var $newRow = $(template);
+
+            if (rule) {
+                $newRow.find('select[name="type"]').val(rule.type);
+                $newRow.find('select[name="brand"]').val(rule.brand);
+                $newRow.find('input[name="low_break"]').val(rule.low_break);
+                $newRow.find('input[name="high_break"]').val(rule.high_break);
+                $newRow.find('input[name="percentage"]').val(rule.percentage);
+                $newRow.find('input[name="personalisation"]').val(rule.personalisation); 
+
+                updateRowState($newRow.find('select[name="type"]'));
+            }
+
+            $('#itemsTableBody').append($newRow);
+        }
+
+        function updateRowState($typeSelect) {
+            var selectedType = $typeSelect.val();
+            var $row = $typeSelect.closest('tr');
+            var $brandDropdown = $row.find('select[name="brand"]');
+            var $lowBreak = $row.find('input[name="low_break"]');
+            var $highBreak = $row.find('input[name="high_break"]');
+
+            if (selectedType === 'Brand') {
+                $brandDropdown.prop('disabled', false);
+                if ($brandDropdown.val() === "") {
+                    $brandDropdown.val('');
+                }
+            } else {
+                $brandDropdown.prop('disabled', true).val(''); 
+            }
+
+            if (selectedType === 'Qty') {
+                $lowBreak.prop('step', '1').attr('placeholder', '0');
+                $highBreak.prop('step', '1').attr('placeholder', '0');
+            } else {
+                $lowBreak.prop('step', '0.01').attr('placeholder', '0.00');
+                $highBreak.prop('step', '0.01').attr('placeholder', '0.00');
+            }
+        }
+
+        function getInitialSettings() {
+            if (!subdom) return;
+
+            $.ajax({
+                url: 'https://app.apparel-catalogue.co.uk/api/settings/' + subdom,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function(response) {
+                    $('input[name="company"]').val(response.company_name);
+                    $('input[name="address_l1"]').val(response.address_line_1);
+                    $('input[name="address_l2"]').val(response.address_line_2);
+                    $('input[name="address_l3"]').val(response.address_line_3);
+                    $('input[name="post_code"]').val(response.post_code);
+                    $('input[name="telephone"]').val(response.telephone);
+                },
+                error: function(xhr, status, error) {
+                    console.error('API Error (getInitialSettings):', error);
+                    showFormMessage('Error fetching customer details.', 'error');
+                }
+            });
+        }
+
+        function getPricingRules() {
+            if (!subdom) return;
+            
+            const pricingRulesEndpoint = 'https://app.apparel-catalogue.co.uk/api/pricingrules/' + subdom;
+
+            $.ajax({
+                url: pricingRulesEndpoint, 
+                type: 'GET',
+                contentType: 'application/json',
+                success: function(rules) {
+                    $('#itemsTableBody').empty(); 
+                    
+                    if (rules && Array.isArray(rules) && rules.length > 0) {
+                        rules.forEach(function(rule) {
+                            addPricingRow(rule);
+                        });
+$('input[step="0.01"]').each(function() {
+            let val = $(this).val();
+            let num = parseFloat(val);
+
+            if (!isNaN(num)) {
+                $(this).val(num.toFixed(2));
+            }
+        });
+                    } else {
+                        addPricingRow(); 
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('API Error (getPricingRules):', error);
+                    $('#itemsTableBody').empty();
+                    addPricingRow();
+                    showFormMessage('Error fetching pricing rules. You can add new ones.', 'error');
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            
+            $('#btnAddItem').on('click', function() {
+                addPricingRow();
+            });
+
+            $('#itemsTableBody').on('click', '.btnDelete', function() {
+                $(this).closest('tr').remove();
+            });
+
+            $('#itemsTableBody').on('change', 'select[name="type"]', function() {
+                updateRowState($(this));
+            });
+
+            $('#apiForm').on('input change', '.input-error', function() {
+                $(this).removeClass('input-error');
+                hideFormMessage(); 
+            });
+
+            $('#apiForm').on('submit', function(event) {
+                event.preventDefault();
+                hideFormMessage();
+                $('.input-error').removeClass('input-error'); 
+                $('#btnSubmitForm').prop('disabled', true).text('Submitting...');
+
+                let isValid = true;
+
+                const $company = $('input[name="company"]');
+                if (!$company.val()) {
+                    isValid = false;
+                    $company.addClass('input-error');
+                }
+
+                $('#itemsTableBody tr').each(function() {
+                    var $row = $(this);
+                    const $type = $row.find('select[name="type"]');
+                    const $brand = $row.find('select[name="brand"]');
+                    const $low = $row.find('input[name="low_break"]');
+                    const $high = $row.find('input[name="high_break"]');
+                    const $percent = $row.find('input[name="percentage"]');
+                    const $personalisation= $row.find('input[name="personalisation"]');
+
+                    if (!$type.val()) { isValid = false; $type.addClass('input-error'); }
+                    if (!$brand.prop('disabled') && !$brand.val()) { isValid = false; $brand.addClass('input-error'); }
+                    if ($low.val() === '') { isValid = false; $low.addClass('input-error'); }
+                    if ($high.val() === '') { isValid = false; $high.addClass('input-error'); }
+                    if ($percent.val() === '') { isValid = false; $percent.addClass('input-error'); }
+                    if ($personalisation.val() === '') { isValid = false; $personalisation.addClass('input-error'); }
+                });
+
+                if (!isValid) {
+                    showFormMessage('Please fill in all required fields, marked in red.', 'error');
+                    $('#btnSubmitForm').prop('disabled', false).text('Submit');
+                    return; 
+                }
+
+                var customerData = {
+                    company_name: $('input[name="company"]').val(),
+                    address_line_1: $('input[name="address_l1"]').val(),
+                    address_line_2: $('input[name="address_l2"]').val(),
+                    address_line_3: $('input[name="address_l3"]').val(),
+                    post_code: $('input[name="post_code"]').val(),
+                    telephone: $('input[name="telephone"]').val()
+                };
+
+                var itemsData = [];
+                $('#itemsTableBody tr').each(function() {
+                    var row = $(this);
+                    
+                    var item = {
+                        customer: subdom, 
+                        type: row.find('select[name="type"]').val(),
+                        brand: row.find('select[name="brand"]').val() || null, 
+                        low_break: parseFloat(row.find('input[name="low_break"]').val()),
+                        high_break: parseFloat(row.find('input[name="high_break"]').val()),
+                        percentage: parseInt(row.find('input[name="percentage"]').val()),
+                        personalisation: parseFloat(row.find('input[name="personalisation"]').val())
+                    };
+                    itemsData.push(item);
+                });
+
+                var customerSubmit = $.ajax({
+                    url: 'https://app.apparel-catalogue.co.uk/api/set/' + subdom,
+                    type: 'PATCH',
+                    contentType: 'application/json',
+                    data: JSON.stringify(customerData)
+                });
+
+                var pricingRulesEndpoint = 'https://app.apparel-catalogue.co.uk/api/pricingrules/' + subdom;
+                var pricingSubmit = $.ajax({
+                    url: pricingRulesEndpoint,
+                    type: 'POST', 
+                    contentType: 'application/json',
+                    data: JSON.stringify(itemsData)
+                });
+
+                Promise.all([customerSubmit, pricingSubmit])
+                    .then(function(responses) {
+                        console.log('Customer Success:', responses[0]);
+                        console.log('Pricing Success:', responses[1]);
+                        showFormMessage('Settings saved successfully!', 'success');
+                    })
+                    .catch(function(error) {
+                        console.error('API Submit Error:', error);
+                        showFormMessage('An error occurred while saving. Please check console.', 'error');
+                    })
+                    .finally(function() {
+                        $('#btnSubmitForm').prop('disabled', false).text('Submit');
+                    });
+            });
+
+
+            if (!customerContextInfo || !customerContextInfo.CompanyAccountNumber) {
+                console.error("customerContextInfo.CompanyAccountNumber is not defined.");
+                showFormMessage("Error: Could not identify customer.", 'error');
+                return;
+            }
+
+            $.ajax({
+                url: 'https://app.apparel-catalogue.co.uk/api/getuser/' + customerContextInfo.CompanyAccountNumber,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function(response) {
+                    if (response && response.userInfo && response.userInfo.subdom) {
+                        subdom = response.userInfo.subdom;
+                        
+                        getInitialSettings();
+                        getPricingRules();
+                    } else {
+                        console.error('Could not find subdomain in user response.');
+                        showFormMessage('Error: Could not identify customer subdomain.', 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('API Error (getuser):', error);
+                    showFormMessage('Fatal Error: Could not fetch user data.', 'error');
+                }
+            });
+
+        }); 
+    })(jQuery);
+
+$(document).on('blur change', 'input[step="0.01"]', function() {
+            let val = $(this).val();
+            let num = parseFloat(val);
+
+            if (!isNaN(num)) {
+                $(this).val(num.toFixed(2));
+            }
+        });
+    </script>
