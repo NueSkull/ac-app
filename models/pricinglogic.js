@@ -38,7 +38,7 @@ exports.updatePricingF = async (subdom, rules) => {
                 rule.low_break,
                 rule.high_break,
                 rule.percentage,
-                rule.personalization
+                rule.personalization || 0
             ]);
 
             const insertQuery = format(
