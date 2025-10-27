@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cron = require('node-cron')
-const {getUserSettings, storeSettings} = require("./controllers/userSettings")
+const {getUserSettings, storeSettings, getUser} = require("./controllers/userSettings")
 const {getStyleInfo} = require('./controllers/getStyleInfo')
 const fetchStock = require('./db/fetchStock')
 const fetchPrices = require('./db/fetchPrices')
@@ -18,6 +18,7 @@ app.use(cors(corsOptions))
 app.get("/api/settings/:userid", getUserSettings);
 app.patch("/api/set/:userid", storeSettings);
 app.get("/api/styleinfo/:sku", getStyleInfo);
+app.get("/api/getuser", getUser);
 
 app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})

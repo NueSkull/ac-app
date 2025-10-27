@@ -38,3 +38,8 @@ exports.storeSettings = async (userID, updates) => {
   return result.rows[0];
 }
 
+exports.getUserInfo = async (accountNumber) => {
+  const userInfo = await db.query(`SELECT * FROM user_lookup WHERE c_account_number = $1;`,[accountNumber])
+  return result.rows[0];
+}
+
