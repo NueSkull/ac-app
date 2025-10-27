@@ -6,7 +6,7 @@ const {getUserSettings, storeSettings, getUser} = require("./controllers/userSet
 const {getStyleInfo} = require('./controllers/getStyleInfo')
 const fetchStock = require('./db/fetchStock')
 const fetchPrices = require('./db/fetchPrices')
-const allowedOrigins = /^https?:\/\/(?:(?:.+\.)?apparel-catalogue\.co\.uk$|shop\.ralawise\.com\/my-account\/catalogue\/$)/;
+const allowedOrigins = /^https?:\/\/(?:(?:.+\.)?apparel-catalogue\.co\.uk|shop\.ralawise\.com)$/;
 const corsOptions = {
   origin: allowedOrigins,
   optionsSuccessStatus: 200 
