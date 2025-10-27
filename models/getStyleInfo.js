@@ -9,7 +9,7 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
         const updatedPrices = prices.map((size) => {
             for(const rule in brand) {
                 if(size.price >= brand[rule].low_break && size.price <= brand[rule].high_break) {
-                    return {...size, price: Math.ceil(((size.price / 100) * (brand[rule].percentage + 100)) * 100) / 100}
+                    return {...size, price: Math.ceil(((size.price / 100) * (brand[rule].percentage + 100)) * 100) / 100, personalisation: brand[rule].personalisation}
                 }
             }
 
@@ -17,6 +17,40 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
         })
         return updatedPrices
     }
+
+    async function priceMarkup(pricemarkup, prices) {
+        const updatedPrices = prices.map((size) => {
+            for(const rule in pricemarkup) {
+                if(size.price >= pricemarkup[rule].low_break && size.price <= pricemarkup[rule].high_break) {
+                    return {...size, price: Math.ceil(((size.price / 100) * (pricemarkup[rule].percentage + 100)) * 100) / 100, personalisation: pricemarkup[rule].personalisation}
+                }
+            }
+
+            return size;
+        })
+        return updatedPrices
+    }
+
+async function qtyMarkups(qtys, prices) {
+    const updatedPrices = prices.map((size) => {
+        const newQtysArray = [];
+        let newQtyLabel = ''; 
+
+        for (const rule in qtys) {
+
+            const qtyCost = Math.ceil(((size.price / 100) * (100 - qtys[rule].percentage)) * 100) / 100;
+            
+            newQtysArray.push({qtyAmount: qtys[rule].low_break, qtyCost: qtyCost, personalisation: qtys[rule].personalisation});
+        }
+
+        return {
+            ...size,
+            qtys: newQtysArray
+        };
+    });
+    
+    return updatedPrices;
+}
     
     console.log(`Style info request received for ${sku} - ${brand} - ${subdom}`);
             const query = `
@@ -30,13 +64,32 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
             const response = await db.query(query, [sku]);
             returningPrices = response.rows;
 
-            if(subdom && brand) {
+            if(subdom) {
                 const priceMatrix = await getPricingF(subdom);
-                const filterForBrand = priceMatrix.filter((rule) => {
-                    return rule.brand === brand;
+
+                if(brand) {
+                    const filterForBrand = priceMatrix.filter((rule) => {
+                        return rule.brand === brand;
+                    })
+                    if(filterForBrand.length > 0) {
+                        returningPrices = await brandMarkup(filterForBrand, returningPrices);
+                    }
+                }
+
+                const filteredForPrice = priceMatrix.filter((rule) => {
+                        return rule.type === "Price"
                 })
-                if(filterForBrand.length > 0) {
-                  returningPrices = await brandMarkup(filterForBrand, returningPrices);
+
+                const filteredForQty = priceMatrix.filter((rule) => {
+                        return rule.type === "Qty"
+                })
+
+                if(filteredForPrice.length > 0) {
+                    returningPrices = await priceMarkup(filteredForPrice, returningPrices)
+                }
+
+                if(filteredForQty.length > 0) {
+                    returningPrices = await qtyMarkups(filteredForQty, returningPrices)
                 }
             }
 

@@ -1,6 +1,7 @@
-<style>
+ <style>
         body {
             background-color: #f4f7f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 20px;
         }
@@ -21,9 +22,9 @@
             font-weight: bold;
             padding: 0 10px;
             margin-left: 10px;
-    max-width: fit-content;
-    background: white;
-    border-radius: 5px;
+            max-width: fit-content;
+            background: white;
+            border-radius: 5px;
         }
         .form-grid {
             display: grid;
@@ -45,11 +46,12 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box;
+            box-sizing: border-box; /* Important for padding to work correctly */
         }
         input:disabled, select:disabled {
             background-color: #eee;
             cursor: not-allowed;
+            color: #777;
         }
         table {
             width: 100%;
@@ -70,6 +72,14 @@
             width: 100%;
             padding: 8px;
             box-sizing: border-box; 
+        }
+        /* Style for the default row text */
+        #default-pricing-row td:first-child,
+        #default-pricing-row td:nth-child(2) {
+            font-weight: bold;
+            color: #333;
+            background-color: #fdfdfd;
+            vertical-align: middle;
         }
         button {
             padding: 10px 15px;
@@ -175,14 +185,44 @@
                     <tr>
                         <th>Rule Type</th>
                         <th>Brand</th>
-                        <th>Low</th>
+                        <th>Low / Min Qty</th>
                         <th>High</th>
                         <th>Markup (Percentage)</th>
                         <th>Personalisation Cost</th>
                         <th></th>
                     </tr>
                 </thead>
+                
                 <tbody id="itemsTableBody">
+                    <!-- Static Default Pricing Row -->
+                    <tr id="default-pricing-row">
+                        <td>
+                            Default Pricing
+                            <!-- Hidden input to include this row in submission data -->
+                            <input type="hidden" name="type" value="Price"> 
+                        </td>
+                        <td>
+                            N/A
+                            <!-- Hidden input for brand -->
+                            <input type="hidden" name="brand" value="">
+                        </td>
+                        <td>
+                            <input type="number" name="low_break" value="0" step="1" placeholder="0" disabled />
+                        </td>
+                        <td>
+                            <input type="number" name="high_break" value="999" step="1" placeholder="999" disabled />
+                        </td>
+                        <td>
+                            <input type="number" name="percentage" step="0.01" placeholder="0.00" />
+                        </td>
+                        <td>
+                            <input type="number" name="personalisation" step="0.01" placeholder="0.00" value="0.00" />
+                        </td>
+                        <td>
+                            <!-- No delete button -->
+                        </td>
+                    </tr>
+                    <!-- Dynamic rows will be added here -->
                 </tbody>
             </table>
             <button type="button" id="btnAddItem">Add Rule Row</button>
@@ -192,6 +232,7 @@
 
     </form>
 
+    <!-- Template for new dynamic rows -->
     <template id="item-row-template">
         <tr>
             <td>
@@ -206,104 +247,104 @@
                 <select name="brand" disabled>
                     <option value="">--N/A--</option>
                     <option value="2786">2786</option>
-<option value="Add It On">Add It On</option>
-<option value="Adidas">Adidas</option>
-<option value="Anthem">Anthem</option>
-<option value="Asquith & Fox">Asquith & Fox</option>
-<option value="AWDis">AWDis</option>
-<option value="AWDis Academy">AWDis Academy</option>
-<option value="AWDis Ecologie">AWDis Ecologie</option>
-<option value="AWDis Just Cool">AWDis Just Cool</option>
-<option value="AWDis Just Hoods">AWDis Just Hoods</option>
-<option value="AWDis Just Polo's">AWDis Just Polo's</option>
-<option value="AWDis So Denim">AWDis So Denim</option>
-<option value="AWDis Just T's">AWDis Just T's</option>
-<option value="B&C Collection">B&C Collection</option>
-<option value="BabyBugz">BabyBugz</option>
-<option value="BagBase">BagBase</option>
-<option value="Beechfield">Beechfield</option>
-<option value="Bella+Canvas">Bella+Canvas</option>
-<option value="Build Your Brand">Build Your Brand</option>
-<option value="Build Your Brand Basic">Build Your Brand Basic</option>
-<option value="Build Your Brandit">Build Your Brandit</option>
-<option value="Callaway">Callaway</option>
-<option value="Colortone">Colortone</option>
-<option value="Comfort Colors">Comfort Colors</option>
-<option value="Craghoppers Expert">Craghoppers Expert</option>
-<option value="Everyday Essentials">Everyday Essentials</option>
-<option value="Finden & Hales">Finden & Hales</option>
-<option value="Flexfit by Yupoong">Flexfit by Yupoong</option>
-<option value="Front Row">Front Row</option>
-<option value="Fruit of the Loom">Fruit of the Loom</option>
-<option value="Gamegear">Gamegear</option>
-<option value="Gildan">Gildan</option>
-<option value="Henbury">Henbury</option>
-<option value="Home & Living">Home & Living</option>
-<option value="Jack Wolfskin">Jack Wolfskin</option>
-<option value="Kariban">Kariban</option>
-<option value="Kariban Proact">Kariban Proact</option>
-<option value="KiMood">KiMood</option>
-<option value="Kodak">Kodak</option>
-<option value="Kustom Kit">Kustom Kit</option>
-<option value="Larkwood">Larkwood</option>
-<option value="Maddins">Maddins</option>
-<option value="Madeira">Madeira</option>
-<option value="MagiCut">MagiCut</option>
-<option value="Marketing Hub">Marketing Hub</option>
-<option value="Mumbles">Mumbles</option>
-<option value="New Era">New Era</option>
-<option value="New Morning Studios">New Morning Studios</option>
-<option value="Nike">Nike</option>
-<option value="Nimbus">Nimbus</option>
-<option value="Nutshell">Nutshell</option>
-<option value="OGIO">OGIO</option>
-<option value="Onna By Premier">Onna By Premier</option>
-<option value="Portwest">Portwest</option>
-<option value="Premier">Premier</option>
-<option value="Pro RTX">Pro RTX</option>
-<option value="Pro RTX High Visibility">Pro RTX High Visibility</option>
-<option value="Quadra">Quadra</option>
-<option value="RalaBundle">RalaBundle</option>
-<option value="RalaDeal - Outlet">RalaDeal - Outlet</option>
-<option value="RalaFlex">RalaFlex</option>
-<option value="Regatta High Visibility">Regatta High Visibility</option>
-<option value="Regatta Honestly Made">Regatta Honestly Made</option>
-<option value="Regatta Junior">Regatta Junior</option>
-<option value="Regatta Professional">Regatta Professional</option>
-<option value="Regatta Safety Footwear">Regatta Safety Footwear</option>
-<option value="Resolute Ink">Resolute Ink</option>
-<option value="Result">Result</option>
-<option value="Result Core">Result Core</option>
-<option value="Result Genuine Recycled">Result Genuine Recycled</option>
-<option value="Result Headwear">Result Headwear</option>
-<option value="Result Safeguard">Result Safeguard</option>
-<option value="Result Winter Essentials">Result Winter Essentials</option>
-<option value="Result Urban Outdoor">Result Urban Outdoor</option>
-<option value="Result Work-Guard">Result Work-Guard</option>
-<option value="Rhino">Rhino</option>
-<option value="Ribbon">Ribbon</option>
-<option value="Russell">Russell</option>
-<option value="Russell Collection">Russell Collection</option>
-<option value="Scruffs">Scruffs</option>
-<option value="SF Clothing">SF Clothing</option>
-<option value="Spiro">Spiro</option>
-<option value="Spiro Recycled">Spiro Recycled</option>
-<option value="Splashmacs">Splashmacs</option>
-<option value="Stanley / Stella">Stanley / Stella</option>
-<option value="Stanley Workwear">Stanley Workwear</option>
-<option value="Stormtech">Stormtech</option>
-<option value="The Christmas Shop">The Christmas Shop</option>
-<option value="Tee Jays">Tee Jays</option>
-<option value="TheMagicTouch">TheMagicTouch</option>
-<option value="Tombo">Tombo</option>
-<option value="Towel City">Towel City</option>
-<option value="TriDri®">TriDri®</option>
-<option value="Under Armour">Under Armour</option>
-<option value="Under Armour Golf">Under Armour Golf</option>
-<option value="Westford Mill">Westford Mill</option>
-<option value="Wombat">Wombat</option>
-<option value="Xpres">Xpres</option>
-<option value="Yoko">Yoko</option>
+                    <option value="Add It On">Add It On</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Anthem">Anthem</option>
+                    <option value="Asquith & Fox">Asquith & Fox</option>
+                    <option value="AWDis">AWDis</option>
+                    <option value="AWDis Academy">AWDis Academy</option>
+                    <option value="AWDis Ecologie">AWDis Ecologie</option>
+                    <option value="AWDis Just Cool">AWDis Just Cool</option>
+                    <option value="AWDis Just Hoods">AWDis Just Hoods</option>
+                    <option value="AWDis Just Polo's">AWDis Just Polo's</option>
+                    <option value="AWDis So Denim">AWDis So Denim</option>
+                    <option value="AWDis Just T's">AWDis Just T's</option>
+                    <option value="B&C Collection">B&C Collection</option>
+                    <option value="BabyBugz">BabyBugz</option>
+                    <option value="BagBase">BagBase</option>
+                    <option value="Beechfield">Beechfield</option>
+                    <option value="Bella+Canvas">Bella+Canvas</option>
+                    <option value="Build Your Brand">Build Your Brand</option>
+                    <option value="Build Your Brand Basic">Build Your Brand Basic</option>
+                    <option value="Build Your Brandit">Build Your Brandit</option>
+                    <option value="Callaway">Callaway</option>
+                    <option value="Colortone">Colortone</option>
+                    <option value="Comfort Colors">Comfort Colors</option>
+                    <option value="Craghoppers Expert">Craghoppers Expert</option>
+                    <option value="Everyday Essentials">Everyday Essentials</option>
+                    <option value="Finden & Hales">Finden & Hales</option>
+                    <option value="Flexfit by Yupoong">Flexfit by Yupoong</option>
+                    <option value="Front Row">Front Row</option>
+                    <option value="Fruit of the Loom">Fruit of the Loom</option>
+                    <option value="Gamegear">Gamegear</option>
+                    <option value="Gildan">Gildan</option>
+                    <option value="Henbury">Henbury</option>
+                    <option value="Home & Living">Home & Living</option>
+                    <option value="Jack Wolfskin">Jack Wolfskin</option>
+                    <option value="Kariban">Kariban</option>
+                    <option value="Kariban Proact">Kariban Proact</option>
+                    <option value="KiMood">KiMood</option>
+                    <option value="Kodak">Kodak</option>
+                    <option value="Kustom Kit">Kustom Kit</option>
+                    <option value="Larkwood">Larkwood</option>
+                    <option value="Maddins">Maddins</option>
+                    <option value="Madeira">Madeira</option>
+                    <option value="MagiCut">MagiCut</option>
+                    <option value="Marketing Hub">Marketing Hub</option>
+                    <option value="Mumbles">Mumbles</option>
+                    <option value="New Era">New Era</option>
+                    <option value="New Morning Studios">New Morning Studios</option>
+                    <option value="Nike">Nike</option>
+                    <option value="Nimbus">Nimbus</option>
+                    <option value="Nutshell">Nutshell</option>
+                    <option value="OGIO">OGIO</option>
+                    <option value="Onna By Premier">Onna By Premier</option>
+                    <option value="Portwest">Portwest</option>
+                    <option value="Premier">Premier</option>
+                    <option value="Pro RTX">Pro RTX</option>
+                    <option value="Pro RTX High Visibility">Pro RTX High Visibility</option>
+                    <option value="Quadra">Quadra</option>
+                    <option value="RalaBundle">RalaBundle</option>
+                    <option value="RalaDeal - Outlet">RalaDeal - Outlet</option>
+                    <option value="RalaFlex">RalaFlex</option>
+                    <option value="Regatta High Visibility">Regatta High Visibility</option>
+                    <option value="Regatta Honestly Made">Regatta Honestly Made</option>
+                    <option value="Regatta Junior">Regatta Junior</option>
+                    <option value="Regatta Professional">Regatta Professional</option>
+                    <option value="Regatta Safety Footwear">Regatta Safety Footwear</option>
+                    <option value="Resolute Ink">Resolute Ink</option>
+                    <option value="Result">Result</option>
+                    <option value="Result Core">Result Core</option>
+                    <option value="Result Genuine Recycled">Result Genuine Recycled</option>
+                    <option value="Result Headwear">Result Headwear</option>
+                    <option value="Result Safeguard">Result Safeguard</option>
+                    <option value="Result Winter Essentials">Result Winter Essentials</option>
+                    <option value="Result Urban Outdoor">Result Urban Outdoor</option>
+                    <option value="Result Work-Guard">Result Work-Guard</option>
+                    <option value="Rhino">Rhino</option>
+                    <option value="Ribbon">Ribbon</option>
+                    <option value="Russell">Russell</option>
+                    <option value="Russell Collection">Russell Collection</option>
+                    <option value="Scruffs">Scruffs</option>
+                    <option value="SF Clothing">SF Clothing</option>
+                    <option value="Spiro">Spiro</option>
+                    <option value="Spiro Recycled">Spiro Recycled</option>
+                    <option value="Splashmacs">Splashmacs</option>
+                    <option value="Stanley / Stella">Stanley / Stella</option>
+                    <option value="Stanley Workwear">Stanley Workwear</option>
+                    <option value="Stormtech">Stormtech</option>
+                    <option value="The Christmas Shop">The Christmas Shop</option>
+                    <option value="Tee Jays">Tee Jays</option>
+                    <option value="TheMagicTouch">TheMagicTouch</option>
+                    <option value="Tombo">Tombo</option>
+                    <option value="Towel City">Towel City</option>
+                    <option value="TriDri®">TriDri®</option>
+                    <option value="Under Armour">Under Armour</option>
+                    <option value="Under Armour Golf">Under Armour Golf</option>
+                    <option value="Westford Mill">Westford Mill</option>
+                    <option value="Wombat">Wombat</option>
+                    <option value="Xpres">Xpres</option>
+                    <option value="Yoko">Yoko</option>
                 </select>
             </td>
             <td>
@@ -313,7 +354,7 @@
                 <input type="number" name="high_break" step="1" placeholder="0" />
             </td>
             <td>
-                <input type="number" name="percentage" step="0.01" placeholder="0" />
+                <input type="number" name="percentage" step="0.01" placeholder="0.00" />
             </td>
             <td>
                 <input type="number" name="personalisation" step="0.01" placeholder="0.00" value="0.00" />
@@ -325,6 +366,14 @@
     </template>
 
     <script>
+    // Mock customerContextInfo for testing if not present
+    if (typeof customerContextInfo === 'undefined') {
+        console.warn("customerContextInfo is not defined. Using mock data for testing.");
+        var customerContextInfo = {
+            CompanyAccountNumber: "TEST-ACCOUNT-123" // Mock account number
+        };
+    }
+
     (function($) {
         let subdom = ''; 
 
@@ -366,19 +415,30 @@
             var $lowBreak = $row.find('input[name="low_break"]');
             var $highBreak = $row.find('input[name="high_break"]');
 
+            // --- REVISED LOGIC ---
+
+            // 1. Handle Brand Dropdown
             if (selectedType === 'Brand') {
                 $brandDropdown.prop('disabled', false);
-                if ($brandDropdown.val() === "") {
-                    $brandDropdown.val('');
-                }
+                // Don't clear the value, it might have been pre-populated by addPricingRow
             } else {
+                // For 'Price', 'Qty', or '--Select Type--'
                 $brandDropdown.prop('disabled', true).val(''); 
             }
 
+            // 2. Handle High Break (for Qty)
+            if (selectedType === 'Qty') {
+                $highBreak.prop('disabled', true).val(0); // Qty rule only needs a min
+            } else {
+                $highBreak.prop('disabled', false);
+            }
+
+            // 3. Handle Low/High Break steps
             if (selectedType === 'Qty') {
                 $lowBreak.prop('step', '1').attr('placeholder', '0');
                 $highBreak.prop('step', '1').attr('placeholder', '0');
             } else {
+                // Default to price steps for 'Price', 'Brand', or 'Select'
                 $lowBreak.prop('step', '0.01').attr('placeholder', '0.00');
                 $highBreak.prop('step', '0.01').attr('placeholder', '0.00');
             }
@@ -386,6 +446,16 @@
 
         function getInitialSettings() {
             if (!subdom) return;
+
+            // Mocking API for demonstration
+            console.log("MOCK API: Fetching settings for " + subdom);
+            if (subdom === 'mock-user') {
+                 $('input[name="company"]').val('Mock Company');
+                 $('input[name="address_l1"]').val('123 Mock Street');
+                 $('input[name="post_code"]').val('M1 1AA');
+                 $('input[name="telephone"]').val('01234 567890');
+                 return;
+            }
 
             $.ajax({
                 url: 'https://app.apparel-catalogue.co.uk/api/settings/' + subdom,
@@ -411,34 +481,91 @@
             
             const pricingRulesEndpoint = 'https://app.apparel-catalogue.co.uk/api/pricingrules/' + subdom;
 
+             // Mocking API for demonstration
+             console.log("MOCK API: Fetching pricing rules for " + subdom);
+             if (subdom === 'mock-user') {
+                const mockRules = [
+                    // This is the default rule
+                    { type: 'Price', brand: null, low_break: 0, high_break: 999, percentage: 50, personalisation: 5.00 },
+                    // This is a brand rule
+                    { type: 'Brand', brand: 'Adidas', low_break: 0, high_break: 999, percentage: 40, personalisation: 5.00 },
+                    // This is a Qty rule
+                    { type: 'Qty', brand: null, low_break: 10, high_break: 0, percentage: 45, personalisation: 3.00 }
+                ];
+                
+                // Clear dynamic rows, keep default
+                $('#itemsTableBody tr:not(#default-pricing-row)').remove(); 
+                
+                mockRules.forEach(function(rule) {
+                    // Check if this is the default rule (Price, 0-999)
+                    if (rule.type === 'Price' && rule.low_break == 0 && rule.high_break == 999) {
+                        const $defaultRow = $('#default-pricing-row');
+                        $defaultRow.find('input[name="percentage"]').val(rule.percentage);
+                        $defaultRow.find('input[name="personalisation"]').val(rule.personalisation);
+                    } else {
+                        addPricingRow(rule); // Add other rules normally
+                    }
+                });
+                
+                // Format all decimal inputs
+                $('input[step="0.01"]').each(function() {
+                     let val = $(this).val();
+                     let num = parseFloat(val);
+                     if (!isNaN(num)) {
+                         $(this).val(num.toFixed(2));
+                     }
+                 });
+                return;
+             }
+
             $.ajax({
                 url: pricingRulesEndpoint, 
                 type: 'GET',
                 contentType: 'application/json',
                 success: function(rules) {
-                    $('#itemsTableBody').empty(); 
+                    // Clear all rows EXCEPT the default one
+                    $('#itemsTableBody tr:not(#default-pricing-row)').remove(); 
                     
                     if (rules && Array.isArray(rules) && rules.length > 0) {
+                        
                         rules.forEach(function(rule) {
-                            addPricingRow(rule);
+                            // Check if this rule is the default rule
+                            if (rule.type === 'Price' && rule.low_break == 0 && rule.high_break == 999) {
+                                // This is the default rule. Populate the default row.
+                                const $defaultRow = $('#default-pricing-row');
+                                $defaultRow.find('input[name="percentage"]').val(rule.percentage);
+                                $defaultRow.find('input[name="personalisation"]').val(rule.personalisation);
+                            } else {
+                                // This is a normal rule. Add it.
+                                addPricingRow(rule);
+                            }
                         });
-$('input[step="0.01"]').each(function() {
-            let val = $(this).val();
-            let num = parseFloat(val);
-
-            if (!isNaN(num)) {
-                $(this).val(num.toFixed(2));
-            }
-        });
                     } else {
-                        addPricingRow(); 
+                        // No rules returned. The default row is already there.
+                        // Clear its values just in case.
+                        const $defaultRow = $('#default-pricing-row');
+                        $defaultRow.find('input[name="percentage"]').val('');
+                        $defaultRow.find('input[name="personalisation"]').val('0.00');
                     }
+
+                    // Format all decimal inputs
+                    $('input[step="0.01"]').each(function() {
+                        let val = $(this).val();
+                        let num = parseFloat(val);
+                        if (!isNaN(num)) {
+                            $(this).val(num.toFixed(2));
+                        }
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error('API Error (getPricingRules):', error);
-                    $('#itemsTableBody').empty();
-                    addPricingRow();
-                    showFormMessage('Error fetching pricing rules. You can add new ones.', 'error');
+                    // Clear any dynamically added rows, keep default
+                    $('#itemsTableBody tr:not(#default-pricing-row)').remove();
+                    // Clear default row values on error
+                    const $defaultRow = $('#default-pricing-row');
+                    $defaultRow.find('input[name="percentage"]').val('');
+                    $defaultRow.find('input[name="personalisation"]').val('0.00');
+                    showFormMessage('Error fetching pricing rules. Only default pricing is available.', 'error');
                 }
             });
         }
@@ -450,6 +577,7 @@ $('input[step="0.01"]').each(function() {
             });
 
             $('#itemsTableBody').on('click', '.btnDelete', function() {
+                // The default row doesn't have .btnDelete, so this is safe
                 $(this).closest('tr').remove();
             });
 
@@ -478,19 +606,32 @@ $('input[step="0.01"]').each(function() {
 
                 $('#itemsTableBody tr').each(function() {
                     var $row = $(this);
-                    const $type = $row.find('select[name="type"]');
-                    const $brand = $row.find('select[name="brand"]');
-                    const $low = $row.find('input[name="low_break"]');
-                    const $high = $row.find('input[name="high_break"]');
-                    const $percent = $row.find('input[name="percentage"]');
-                    const $personalisation= $row.find('input[name="personalisation"]');
 
-                    if (!$type.val()) { isValid = false; $type.addClass('input-error'); }
-                    if (!$brand.prop('disabled') && !$brand.val()) { isValid = false; $brand.addClass('input-error'); }
-                    if ($low.val() === '') { isValid = false; $low.addClass('input-error'); }
-                    if ($high.val() === '') { isValid = false; $high.addClass('input-error'); }
-                    if ($percent.val() === '') { isValid = false; $percent.addClass('input-error'); }
-                    if ($personalisation.val() === '') { isValid = false; $personalisation.addClass('input-error'); }
+                    // Check if this is the default row
+                    if ($row.attr('id') === 'default-pricing-row') {
+                        // Only validate percentage and personalisation for default row
+                        const $percent = $row.find('input[name="percentage"]');
+                        const $personalisation= $row.find('input[name="personalisation"]');
+
+                        if ($percent.val() === '') { isValid = false; $percent.addClass('input-error'); }
+                        if ($personalisation.val() === '') { isValid = false; $personalisation.addClass('input-error'); }
+                    
+                    } else {
+                        // Original validation for dynamic rows
+                        const $type = $row.find('select[name="type"]');
+                        const $brand = $row.find('select[name="brand"]');
+                        const $low = $row.find('input[name="low_break"]');
+                        const $high = $row.find('input[name="high_break"]');
+                        const $percent = $row.find('input[name="percentage"]');
+                        const $personalisation= $row.find('input[name="personalisation"]');
+
+                        if (!$type.val()) { isValid = false; $type.addClass('input-error'); }
+                        if (!$brand.prop('disabled') && !$brand.val()) { isValid = false; $brand.addClass('input-error'); }
+                        if ($low.val() === '') { isValid = false; $low.addClass('input-error'); }
+                        if (!$high.prop('disabled') && $high.val() === '') { isValid = false; $high.addClass('input-error'); }
+                        if ($percent.val() === '') { isValid = false; $percent.addClass('input-error'); }
+                        if ($personalisation.val() === '') { isValid = false; $personalisation.addClass('input-error'); }
+                    }
                 });
 
                 if (!isValid) {
@@ -514,15 +655,27 @@ $('input[step="0.01"]').each(function() {
                     
                     var item = {
                         customer: subdom, 
-                        type: row.find('select[name="type"]').val(),
-                        brand: row.find('select[name="brand"]').val() || null, 
+                        type: row.find('[name="type"]').val(), // Finds select or hidden input
+                        brand: row.find('[name="brand"]').val() || null, // Finds select or hidden input
                         low_break: parseFloat(row.find('input[name="low_break"]').val()),
                         high_break: parseFloat(row.find('input[name="high_break"]').val()),
-                        percentage: parseInt(row.find('input[name="percentage"]').val()),
+                        percentage: parseFloat(row.find('input[name="percentage"]').val()), // Changed to parseFloat
                         personalisation: parseFloat(row.find('input[name="personalisation"]').val())
                     };
                     itemsData.push(item);
                 });
+
+                console.log("Submitting Customer Data:", customerData);
+                console.log("Submitting Pricing Data:", itemsData);
+
+                // Mocking API for demonstration
+                if (subdom === 'mock-user') {
+                    setTimeout(() => {
+                        showFormMessage('Settings saved successfully! (Mock Response)', 'success');
+                        $('#btnSubmitForm').prop('disabled', false).text('Submit');
+                    }, 1000);
+                    return;
+                }
 
                 var customerSubmit = $.ajax({
                     url: 'https://app.apparel-catalogue.co.uk/api/set/' + subdom,
@@ -561,6 +714,15 @@ $('input[step="0.01"]').each(function() {
                 return;
             }
 
+            // Mocking API for demonstration
+            if (customerContextInfo.CompanyAccountNumber === "TEST-ACCOUNT-123") {
+                console.log("MOCK API: Using mock user 'mock-user'");
+                subdom = 'mock-user';
+                getInitialSettings();
+                getPricingRules();
+                return;
+            }
+
             $.ajax({
                 url: 'https://app.apparel-catalogue.co.uk/api/getuser/' + customerContextInfo.CompanyAccountNumber,
                 type: 'GET',
@@ -585,12 +747,13 @@ $('input[step="0.01"]').each(function() {
         }); 
     })(jQuery);
 
-$(document).on('blur change', 'input[step="0.01"]', function() {
+    // Global listener to format decimal inputs on blur
+    $(document).on('blur change', 'input[step="0.01"]', function() {
             let val = $(this).val();
             let num = parseFloat(val);
 
             if (!isNaN(num)) {
                 $(this).val(num.toFixed(2));
             }
-        });
+    });
     </script>
