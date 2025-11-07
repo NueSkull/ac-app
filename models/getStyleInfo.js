@@ -9,7 +9,7 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
         const updatedPrices = prices.map((size) => {
             for(const rule in brand) {
                 if(size.price >= brand[rule].low_break && size.price <= brand[rule].high_break) {
-                    return {...size, price: Math.ceil((((size.price / 100) * (brand[rule].percentage + 100)) * 100) / 100) + brand[rule].personalisation}
+                    return {...size, price: (((((size.price / 100) * (brand[rule].percentage + 100)) * 100) / 100) + brand[rule].personalisation).toFixed(2)}
                 }
             }
 
@@ -22,7 +22,7 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
         const updatedPrices = prices.map((size) => {
             for(const rule in pricemarkup) {
                 if(size.price >= pricemarkup[rule].low_break && size.price <= pricemarkup[rule].high_break) {
-                    return {...size, price: Math.ceil((((size.price / 100) * (pricemarkup[rule].percentage + 100)) * 100) / 100) + pricemarkup[rule].personalisation}
+                    return {...size, price: (((((size.price / 100) * (pricemarkup[rule].percentage + 100)) * 100) / 100) + pricemarkup[rule].personalisation).toFixed(2)}
                 }
             }
 
@@ -38,7 +38,7 @@ async function qtyMarkups(qtys, prices) {
 
         for (const rule in qtys) {
 
-            const qtyCost = Math.ceil(((size.price / 100) * (100 - qtys[rule].percentage)) * 100) / 100;
+            const qtyCost = ((((size.price / 100) * (100 - qtys[rule].percentage)) * 100) / 100).toFixed(2);
             
             newQtysArray.push({qtyAmount: qtys[rule].low_break, qtyCost: qtyCost + qtys[rule].personalisation});
         }

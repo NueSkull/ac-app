@@ -28,10 +28,10 @@ exports.getFromPrice = async (sku, brand, subdom) => {
           price >= brand[rule].low_break &&
           price <= brand[rule].high_break
         ) {
-          newPrice = Math.ceil(
+          newPrice = ((
                 ((price / 100) * (brand[rule].percentage + 100) * 100) /
                   100
-              ) + brand[rule].personalisation
+              ) + brand[rule].personalisation).toFixed(2);
           };
         }
         return newPrice;
@@ -44,12 +44,12 @@ exports.getFromPrice = async (sku, brand, subdom) => {
           price >= pricemarkup[rule].low_break &&
           price <= pricemarkup[rule].high_break
         ) {
-          newPrice = Math.ceil(
+          newPrice = ((
                 ((price / 100) *
                   (pricemarkup[rule].percentage + 100) *
                   100) /
                   100
-              ) + pricemarkup[rule].personalisation
+              ) + pricemarkup[rule].personalisation).toFixed(2);
           };
         }
         return newPrice;
