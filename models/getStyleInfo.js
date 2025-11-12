@@ -5,6 +5,23 @@ exports.getStyleInfo = async (sku, brand, subdom) => {
 
     let returningPrices = '';
 
+    async function prettyPrices(prices) {
+        const prettiedPricing = prices.map((size) => {
+            const flooredPrice = Math.floor(size.price);
+            const leftOvers = size.price % flooredPrice;
+            let newPrice = size.price;
+            if(leftOvers <= 0.50) {
+                newPrice = flooredPrice + 0.45;
+            } else {
+                newPrice = flooredPrice + 0.95;
+            }
+
+            return {...size, price: newPrice}
+        })
+
+        return prettiedPricing
+    }
+
     async function brandMarkup(brand, prices) {
         const updatedPrices = prices.map((size) => {
             for(const rule in brand) {
@@ -66,6 +83,7 @@ async function qtyMarkups(qtys, prices) {
 
             if(subdom) {
                 const priceMatrix = await getPricingF(subdom);
+                console.log(priceMatrix)
 
                 if(brand) {
                     const filterForBrand = priceMatrix.filter((rule) => {
@@ -86,6 +104,10 @@ async function qtyMarkups(qtys, prices) {
 
                 if(filteredForPrice.length > 0) {
                     returningPrices = await priceMarkup(filteredForPrice, returningPrices)
+                }
+
+                if(priceMatrix[0].pretty_pricing === true) {
+                    returningPrices = await prettyPrices(returningPrices);
                 }
 
                 if(filteredForQty.length > 0) {
