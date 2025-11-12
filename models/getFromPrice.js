@@ -21,6 +21,19 @@ exports.getFromPrice = async (sku, brand, subdom) => {
 
   // Pricing Logics
 
+  async function prettyPrices(price) {
+            const flooredPrice = Math.floor(price);
+            const leftOvers = price % flooredPrice;
+            let newPrice = price;
+            if(leftOvers <= 0.50) {
+                newPrice = flooredPrice + 0.45;
+            } else {
+                newPrice = flooredPrice + 0.95;
+            }
+
+        return newPrice
+    }
+
   async function brandMarkup(brand, price) {
     let newPrice = price
       for (const rule in brand) {
@@ -82,6 +95,10 @@ return price;
 
     if (filteredForPrice.length > 0) {
       fromPrice = await priceMarkup(filteredForPrice, fromPrice);
+    }
+
+    if(priceMatrix[0].pretty_pricing === true) {
+        fromPrice = await prettyPrices(fromPrice);
     }
 
     if (filteredForQty.length > 0) {
