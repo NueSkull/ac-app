@@ -524,8 +524,15 @@
                     // Set pretty_price checkbox based on first mock rule if present
                     if (mockRules && mockRules.length > 0) {
                         const first = mockRules[0];
-                        // Support both snake_case and camelCase keys
-                        const prettyFlag = (first.pretty_price !== undefined) ? first.pretty_price : first.prettyPrice;
+                        // Prefer new DB field `pretty_pricing`, then camelCase `prettyPricing`,
+                        // fall back to legacy `pretty_price`/`prettyPrice` for compatibility.
+                        const prettyFlag = (first.pretty_pricing !== undefined)
+                            ? first.pretty_pricing
+                            : (first.prettyPricing !== undefined)
+                                ? first.prettyPricing
+                                : (first.pretty_price !== undefined)
+                                    ? first.pretty_price
+                                    : first.prettyPrice;
                         $('#pretty_price').prop('checked', !!prettyFlag);
                     }
                 return;
@@ -573,7 +580,15 @@
                     // Set pretty_price checkbox based on the first returned rule if present
                     if (rules && Array.isArray(rules) && rules.length > 0) {
                         const first = rules[0];
-                        const prettyFlag = (first.pretty_price !== undefined) ? first.pretty_price : first.prettyPrice;
+                        // Prefer new DB field `pretty_pricing`, then camelCase `prettyPricing`,
+                        // fall back to legacy `pretty_price`/`prettyPrice` for compatibility.
+                        const prettyFlag = (first.pretty_pricing !== undefined)
+                            ? first.pretty_pricing
+                            : (first.prettyPricing !== undefined)
+                                ? first.prettyPricing
+                                : (first.pretty_price !== undefined)
+                                    ? first.pretty_price
+                                    : first.prettyPrice;
                         $('#pretty_price').prop('checked', !!prettyFlag);
                     } else {
                         // No rules -> ensure checkbox is unchecked
@@ -686,12 +701,13 @@
                         high_break: parseFloat(row.find('input[name="high_break"]').val()),
                         percentage: parseFloat(row.find('input[name="percentage"]').val()), // Changed to parseFloat
                         personalisation: parseFloat(row.find('input[name="personalisation"]').val()),
-                        pretty_price: $('#pretty_price').prop('checked'),
+                        // Include the checkbox state under the DB field `pretty_pricing`.
+                        pretty_pricing: $('#pretty_price').prop('checked'),
                     };
 
-                    // If this is the default pricing row, include the pretty_price flag so the server can store it
+                    // If this is the default pricing row, include the pretty_pricing flag so the server can store it
                     if (row.attr('id') === 'default-pricing-row') {
-                        item.pretty_price = $('#pretty_price').prop('checked');
+                        item.pretty_pricing = $('#pretty_price').prop('checked');
                     }
                     itemsData.push(item);
                 });
