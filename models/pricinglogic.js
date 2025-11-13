@@ -44,7 +44,7 @@ exports.updatePricingF = async (subdom, rules) => {
             ]);
 
             const insertQuery = format(
-                'INSERT INTO pricing (customer, type, brand, low_break, high_break, percentage, personalisation, pretty_price) VALUES %L',
+                'INSERT INTO pricing (customer, type, brand, low_break, high_break, percentage, personalisation, pretty_pricing) VALUES %L',
                 values
             );
 
