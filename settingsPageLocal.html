@@ -139,6 +139,9 @@
         .input-error {
             border: 2px solid #D40021 !important; 
         }
+        .fullwidthprice {
+            display:inline-block !important;
+        }
     </style>
 </head>
 <body>
@@ -175,13 +178,13 @@
                     <label for="post_code">Post Code:</label>
                     <input type="text" id="post_code" name="post_code">
                 </div>
-                <div>
+                <div class="fullwidthprice">
                     <label for="pretty_price">Customer friendly pricing:</label>
                     <input type="checkbox" id="pretty_price" name="pretty_price">
-                    <p>Customer friendly pricing rounds pricing below .50 to .45, and prices above to .95. For example £12.97 will become £12.95 and £1.14 will become £1.45.</p>
-                    <p>This makes pricing look more uniform.</p>
                 </div>
             </div>
+                    <p class="prettypricedes">Customer friendly pricing rounds pricing below .50 to .45, and prices above to .95. For example £12.97 will become £12.95 and £1.14 will become £1.45.</p>
+                    <p class="prettypricedes">This makes pricing look more uniform.</p>
         </fieldset>
 
         <fieldset>
