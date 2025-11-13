@@ -175,6 +175,12 @@
                     <label for="post_code">Post Code:</label>
                     <input type="text" id="post_code" name="post_code">
                 </div>
+                <div>
+                    <label for="pretty_price">Customer friendly pricing:</label>
+                    <input type="checkbox" id="pretty_price" name="pretty_price">
+                    <p>Customer friendly pricing rounds pricing below .50 to .45, and prices above to .95. For example £12.97 will become £12.95 and £1.14 will become £1.45.</p>
+                    <p>This makes pricing look more uniform.</p>
+                </div>
             </div>
         </fieldset>
 
@@ -370,7 +376,7 @@
     if (typeof customerContextInfo === 'undefined') {
         console.warn("customerContextInfo is not defined. Using mock data for testing.");
         var customerContextInfo = {
-            CompanyAccountNumber: "TEST-ACCOUNT-123" // Mock account number
+            CompanyAccountNumber: "TEST1" // Mock account number
         };
     }
 
@@ -515,6 +521,13 @@
                          $(this).val(num.toFixed(2));
                      }
                  });
+                    // Set pretty_price checkbox based on first mock rule if present
+                    if (mockRules && mockRules.length > 0) {
+                        const first = mockRules[0];
+                        // Support both snake_case and camelCase keys
+                        const prettyFlag = (first.pretty_price !== undefined) ? first.pretty_price : first.prettyPrice;
+                        $('#pretty_price').prop('checked', !!prettyFlag);
+                    }
                 return;
              }
 
@@ -556,6 +569,16 @@
                             $(this).val(num.toFixed(2));
                         }
                     });
+
+                    // Set pretty_price checkbox based on the first returned rule if present
+                    if (rules && Array.isArray(rules) && rules.length > 0) {
+                        const first = rules[0];
+                        const prettyFlag = (first.pretty_price !== undefined) ? first.pretty_price : first.prettyPrice;
+                        $('#pretty_price').prop('checked', !!prettyFlag);
+                    } else {
+                        // No rules -> ensure checkbox is unchecked
+                        $('#pretty_price').prop('checked', false);
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('API Error (getPricingRules):', error);
@@ -565,6 +588,8 @@
                     const $defaultRow = $('#default-pricing-row');
                     $defaultRow.find('input[name="percentage"]').val('');
                     $defaultRow.find('input[name="personalisation"]').val('0.00');
+                    // On error, unset pretty print
+                    $('#pretty_price').prop('checked', false);
                     showFormMessage('Error fetching pricing rules. Only default pricing is available.', 'error');
                 }
             });
@@ -660,8 +685,14 @@
                         low_break: parseFloat(row.find('input[name="low_break"]').val()),
                         high_break: parseFloat(row.find('input[name="high_break"]').val()),
                         percentage: parseFloat(row.find('input[name="percentage"]').val()), // Changed to parseFloat
-                        personalisation: parseFloat(row.find('input[name="personalisation"]').val())
+                        personalisation: parseFloat(row.find('input[name="personalisation"]').val()),
+                        pretty_price: $('#pretty_price').prop('checked'),
                     };
+
+                    // If this is the default pricing row, include the pretty_price flag so the server can store it
+                    if (row.attr('id') === 'default-pricing-row') {
+                        item.pretty_price = $('#pretty_price').prop('checked');
+                    }
                     itemsData.push(item);
                 });
 
