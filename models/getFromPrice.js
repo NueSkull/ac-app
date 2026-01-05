@@ -9,13 +9,13 @@ exports.getFromPrice = async (sku, brand, subdom) => {
     [sku]
   );
 
-  let fromPrice = 999;
+  let fromPrice = {"price": 999,};
 
   // Get initial from price before any logic
 
   for (const price in productPrice.rows) {
-    if (productPrice.rows[price].price < fromPrice) {
-      fromPrice = productPrice.rows[price].price;
+    if (productPrice.rows[price].price < fromPrice.price) {
+      fromPrice.price = productPrice.rows[price].price;
     }
   }
 
@@ -81,7 +81,7 @@ return price;
         return rule.brand === brand;
       });
       if (filterForBrand.length > 0) {
-        fromPrice = await brandMarkup(filterForBrand, fromPrice);
+        fromPrice.price = await brandMarkup(filterForBrand, fromPrice.price);
       }
     }
 
@@ -94,15 +94,15 @@ return price;
     });
 
     if (filteredForPrice.length > 0) {
-      fromPrice = await priceMarkup(filteredForPrice, fromPrice);
+      fromPrice.price = await priceMarkup(filteredForPrice, fromPrice.price);
     }
 
     if(priceMatrix[0].pretty_pricing === true) {
-        fromPrice = await prettyPrices(fromPrice);
+        fromPrice.price = await prettyPrices(fromPrice.price);
     }
 
     if (filteredForQty.length > 0) {
-      fromPrice = await qtyMarkups(filteredForQty, fromPrice);
+      fromPrice.price = await qtyMarkups(filteredForQty, fromPrice.price);
     }
   }
 
