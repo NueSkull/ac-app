@@ -29,13 +29,23 @@ app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
 })
 
-cron.schedule('0 0 2 * * *', async () => {
-  await fetchPrices;
-})
+cron.schedule('0 */5 * * * *', async () => {
+  try {
+    console.log("Fetching stock data...");
+    await fetchStock;
+  } catch (error) {
+    console.error(error);
+  }
+});
 
-cron.schedule('0 */30 * * * *', async () => {
-  await fetchStock;
-})
+cron.schedule('0 0 0 * * *', async () => {
+  try {
+    console.log("Fetching pricing data...");
+    await fetchPrices;
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 async function initialCalls() {
 await fetchStock;
