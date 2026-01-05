@@ -5,7 +5,7 @@ exports.getFromPrice = async (sku, brand, subdom, lang) => {
   console.log(`From price request - ${sku} - ${brand} - ${subdom} - ${lang}`);
 
   const productPrice = await db.query(
-    "SELECT price FROM prices WHERE LEFT(sku, 5) = $1;",
+    `SELECT price FROM prices_${lang} WHERE LEFT(sku, 5) = $1;`,
     [sku]
   );
 

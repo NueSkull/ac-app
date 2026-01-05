@@ -1,8 +1,7 @@
 const Client = require('ftp');
 const fs = require('fs');
 const dotenv = require("dotenv").config();
-const storePrices = require('./storePrices')
-
+const storePrices = require('./storePrices');
 
 const client = new Client();
 
@@ -11,33 +10,44 @@ const config = {
     user: process.env.STOCKUSER,
     password: process.env.STOCKPASS
 };
-  console.log("Prices being retreived");
+
+console.log("Prices being retrieved");
 
 client.on('ready', () => {
-    const remotePath = '/Customer Data/AF051/Prices/price_list.csv';
-    const localPath = './price_list.csv';
+    const remoteDir = '/Customer Data/AF051/Prices/';
 
-    client.get(remotePath, (err, stream) => {
+    client.list(remoteDir, async (err, list) => {
         if (err) {
-            console.log("ERRORRRR DOWNLOADDINGGG THE FILLEEEE")
-            console.error('Error downloading file:', err);
+            console.error('Error listing directory:', err);
             client.end();
             return;
         }
 
-        const writeStream = fs.createWriteStream(localPath);
-        stream.pipe(writeStream);
+        const priceFiles = list.filter(file => file.name.includes('price_list') && file.type === '-');
 
-        writeStream.on('finish', async () => {
-            try {
-                await storePrices(); 
-                console.log('Prices processing finished.');
-            } catch (processError) {
-                console.error('Error processing the prices file:', processError);
-            } finally {
-                client.end();
-            }
-        });
+        for (const file of priceFiles) {
+            const remotePath = `${remoteDir}${file.name}`;
+            const localPath = `./${file.name}`;
+
+            await new Promise((resolve, reject) => {
+                client.get(remotePath, (err, stream) => {
+                    if (err) return reject(err);
+
+                    const writeStream = fs.createWriteStream(localPath);
+                    stream.pipe(writeStream);
+
+                    writeStream.on('finish', async () => {
+                        try {
+                            await storePrices(localPath, file.name);
+                            resolve();
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                });
+            });
+        }
+        client.end();
     });
 });
 

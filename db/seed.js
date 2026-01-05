@@ -5,7 +5,11 @@ async function seed() {
     await db.query('DROP TABLE IF EXISTS pricing;')
     await db.query('DROP TABLE IF EXISTS users;')
     await db.query('DROP TABLE IF EXISTS stock;')
-    await db.query('DROP TABLE IF EXISTS prices;')
+    await db.query('DROP TABLE IF EXISTS prices_en;')
+    await db.query('DROP TABLE IF EXISTS prices_de;')
+    await db.query('DROP TABLE IF EXISTS prices_fr;')
+    await db.query('DROP TABLE IF EXISTS prices_nl;')
+    await db.query('DROP TABLE IF EXISTS prices_ire;')
     
     await db.query(`CREATE TABLE users (
         subdom VARCHAR PRIMARY KEY,
@@ -40,12 +44,36 @@ async function seed() {
         stock_level VARCHAR);`);
 
         
-    await db.query(`CREATE TABLE prices (
+    await db.query(`CREATE TABLE prices_en (
         sku VARCHAR PRIMARY KEY,
         primary_sku VARCHAR,
         price FLOAT(2)
         );`);
 
+    await db.query(`CREATE TABLE prices_de (
+        sku VARCHAR PRIMARY KEY,
+        primary_sku VARCHAR,
+        price FLOAT(2)
+        );`);
+
+    await db.query(`CREATE TABLE prices_fr (
+        sku VARCHAR PRIMARY KEY,
+        primary_sku VARCHAR,
+        price FLOAT(2)
+        );`);
+
+    await db.query(`CREATE TABLE prices_nl (
+        sku VARCHAR PRIMARY KEY,
+        primary_sku VARCHAR,
+        price FLOAT(2)
+        );`);
+
+    await db.query(`CREATE TABLE prices_ire (
+        sku VARCHAR PRIMARY KEY,
+        primary_sku VARCHAR,
+        price FLOAT(2)
+        );`);
+        
     await db.query(`INSERT INTO users (subdom, company_name, address_line_1, address_line_2, address_line_3, post_code, telephone) 
         VALUES ('ac','Apparel Catalogue', '', '', '', '', ''),
         ('marksempire','Ecom Test', 'Unit 112', 'Deeside', 'Flintshire', 'CH5 2UA', '01234567890');`)
