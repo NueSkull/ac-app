@@ -9,7 +9,17 @@ exports.getFromPrice = async (sku, brand, subdom) => {
     [sku]
   );
 
-  let fromPrice = {"price": 999,};
+  const languageKeys = {
+  "en": ["en-GB", "GBP"],
+  "de": ["de-DE", "EUR"],
+  "fr": ["fr-FR", "EUR"],
+  "nl": ["nl-NL", "EUR"]
+  }
+
+  let fromPrice = {"price": 999,
+    "numFormat": languageKeys["en"][0],
+    "currency": languageKeys["en"][1]
+  };
 
   // Get initial from price before any logic
 
