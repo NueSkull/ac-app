@@ -13,10 +13,9 @@ exports.getFromPrice = async (sku, brand, subdom, lang) => {
   "en": ["en-GB", "GBP"],
   "de": ["de-DE", "EUR"],
   "fr": ["fr-FR", "EUR"],
-  "nl": ["nl-NL", "EUR"]
+  "nl": ["nl-NL", "EUR"],
+  "ga": ["en-IE", "EUR"]
   }
-
-  // en is placeholder for now, will need to get user language later on
 
   let fromPrice = {"price": 999,
     "numFormat": languageKeys[lang][0],
