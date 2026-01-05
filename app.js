@@ -23,7 +23,7 @@ app.get("/api/styleinfo/:sku/:brand/:subdom", getStyleInfo);
 app.get("/api/getuser/:ac", getUser);
 app.get("/api/pricingrules/:ac", getPricing)
 app.post("/api/pricingrules/:ac", updatePricing);
-app.get("/api/getfromprice/:sku/:brand/:subdom", getFromPrice)
+app.get("/api/getfromprice/:sku/:brand/:subdom/:lang", getFromPrice)
 
 app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
