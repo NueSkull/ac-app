@@ -7,7 +7,7 @@ const jsonToArray = require('../utils/jsonToArray')
 const injectStockTable = async (csvJson) => {
     await db.query(`DROP TABLE IF EXISTS stock_import;`);
     await db.query(`CREATE TABLE stock_import (
-        sku VARCHAR PRIMARY KEY
+        sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
     const csvArrayd = await jsonToArray(csvJson);
     const startTime = Date.now();

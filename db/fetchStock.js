@@ -14,7 +14,7 @@ const config = {
   console.log("Stock being retreived");
 
 client.on('ready', () => {
-    const remotePath = '/Customer Data/AF051/Stock/stock_list.csv';
+    const remotePath = '/Customer Data/AF051/Stock/apc_stock.csv';
     const localPath = './stock_update.csv';
 
     client.get(remotePath, (err, stream) => {
