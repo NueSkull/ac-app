@@ -25,6 +25,9 @@ app.get("/api/getuser/:ac", getUser);
 app.get("/api/pricingrules/:ac", getPricing)
 app.post("/api/pricingrules/:ac", updatePricing);
 app.get("/api/getfromprice/:sku/:brand/:subdom/:lang", getFromPrice)
+app.get("/api/sync/stock", fetchStock);
+app.get("/api/sync/prices", fetchPrices);
+app.get("/api/sync/sizes", fetchSizes);
 
 app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
@@ -39,23 +42,22 @@ cron.schedule('0 */5 * * * *', async () => {
   }
 });
 
-cron.schedule('0 0 0 * * *', async () => {
+cron.schedule('0 0 1 * * *', async () => {
   try {
     console.log("Fetching pricing data...");
     await fetchPrices;
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+cron.schedule('0 0 2 * * *', async () => {
+  try {
     console.log("Fetching sizes data...");
     await fetchSizes;
   } catch (error) {
     console.error(error);
   }
 });
-
-async function initialCalls() {
-await fetchStock;
-await fetchSizes;
-await fetchPrices;
-}
-
-initialCalls();
 
 module.exports = app;
