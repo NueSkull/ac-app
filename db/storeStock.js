@@ -10,12 +10,13 @@ const injectStockTable = async (csvJson) => {
         sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
     const csvArrayd = await jsonToArray(csvJson);
+    console.log(csvJson);
     const startTime = Date.now();
     let elapsedTime = '';
     const interval = setInterval(function() {
         elapsedTime = Date.now() - startTime;
     }, 100);
-    await db.query(format(`INSERT INTO stock_import (sku, stock_level) VALUES %L ON CONFLICT (sku) DO NOTHING;`, csvArrayd));
+    await db.query(format(`INSERT INTO stock_import (stock_level, sku) VALUES %L ON CONFLICT (sku) DO NOTHING;`, csvArrayd));
     clearInterval(interval)
     console.log(`Stock insertion finished after ${(elapsedTime / 1000).toFixed(3)} s`);
     await db.query(`DROP TABLE IF EXISTS stock;`);
