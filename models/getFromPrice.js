@@ -1,6 +1,5 @@
 const db = require("../db/connection");
 const { getPricingF } = require("./pricinglogic");
-const languageKeys = require("../db/languageKeys").languageKeys;
 
 exports.getFromPrice = async (sku, brand, subdom, lang) => {
   console.log(`From price request - ${sku} - ${brand} - ${subdom} - ${lang}`);
