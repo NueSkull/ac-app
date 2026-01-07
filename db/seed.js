@@ -5,6 +5,7 @@ async function seed() {
     await db.query('DROP TABLE IF EXISTS pricing;')
     await db.query('DROP TABLE IF EXISTS users;')
     await db.query('DROP TABLE IF EXISTS stock;')
+    await db.query('DROP TABLE IF EXISTS sizes;')
     await db.query('DROP TABLE IF EXISTS prices_en;')
     await db.query('DROP TABLE IF EXISTS prices_de;')
     await db.query('DROP TABLE IF EXISTS prices_fr;')
@@ -35,12 +36,14 @@ async function seed() {
         c_account_number VARCHAR PRIMARY KEY,
         subdom VARCHAR REFERENCES users(subdom));`)
 
-        
-    await db.query(`CREATE TABLE stock (
+    await db.query(`CREATE TABLE sizes (
         sku VARCHAR PRIMARY KEY,
         primary_sku VARCHAR,
         alpha_order VARCHAR,
-        size_value VARCHAR,
+        size_value VARCHAR);`);
+        
+    await db.query(`CREATE TABLE stock (
+        sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
 
         

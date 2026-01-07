@@ -1,6 +1,5 @@
 const db = require("../db/connection");
 const { getPricingF } = require('./pricinglogic');
-const languageKeys = require("../db/languageKeys").languageKeys;
 
 exports.getStyleInfo = async (sku, brand, subdom, lang) => {
 
@@ -72,11 +71,12 @@ async function qtyMarkups(qtys, prices) {
     
     console.log(`Style info request received for ${sku} - ${brand} - ${subdom}`);
             const query = `
-                SELECT a.size_value, a.stock_level, p.price 
+                SELECT s.size_value, a.stock_level, p.price 
                 FROM stock AS a
-                JOIN prices_${lang} AS p ON a.sku = p.sku
-                WHERE a.primary_sku = $1
-                ORDER BY a.alpha_order ASC;
+                JOIN prices_${lang} AS p ON a.sku = p.sku 
+                JOIN sizes AS s ON a.sku = s.sku 
+                WHERE s.primary_sku = $1
+                ORDER BY s.alpha_order ASC;
             `;
 
             const response = await db.query(query, [sku]);

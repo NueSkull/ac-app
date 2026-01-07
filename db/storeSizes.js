@@ -1,0 +1,36 @@
+const localPath = './size_update.csv';
+const csv = require('csvtojson');
+const db = require("../db/connection");
+const format = require("pg-format");
+const jsonToArray = require('../utils/jsonToArray')
+
+const injectSizesTable = async (csvJson) => {
+    await db.query(`DROP TABLE IF EXISTS sizes_import;`);
+    await db.query(`CREATE TABLE sizes_import (
+        sku VARCHAR PRIMARY KEY,
+        primary_sku VARCHAR,
+        alpha_order VARCHAR,
+        size_value VARCHAR);`);
+    const csvArrayd = await jsonToArray(csvJson);
+    const skudArray = csvArrayd.map((row) => {
+        return [row[0], row[0].substring(0,9), row[1], row[2]]
+    })
+    const startTime = Date.now();
+    let elapsedTime = '';
+    const interval = setInterval(function() {
+        elapsedTime = Date.now() - startTime;
+    }, 100);
+    await db.query(format(`INSERT INTO sizes_import (sku, primary_sku, alpha_order, size_value) VALUES %L ON CONFLICT (sku) DO NOTHING;`, skudArray));
+    clearInterval(interval)
+    console.log(`Sizes insertion finished after ${(elapsedTime / 1000).toFixed(3)} s`);
+    await db.query(`DROP TABLE IF EXISTS sizes;`);
+    await db.query(`ALTER TABLE sizes_import RENAME TO sizes;`); 
+    
+}
+
+const storeSizes = async () => {
+const csvJson = await csv().fromFile(localPath)
+await injectSizesTable(csvJson);
+}
+
+module.exports = storeSizes;

@@ -8,6 +8,7 @@ const {getPricing, updatePricing} = require('./controllers/pricinglogic')
 const {getFromPrice} = require('./controllers/getFromPrice')
 const fetchStock = require('./db/fetchStock')
 const fetchPrices = require('./db/fetchPrices')
+const fetchSizes = require('./db/fetchSizes')
 const allowedOrigins = /^https?:\/\/(?:(?:.+\.)?apparel-catalogue\.co\.uk|shop\.ralawise\.com)$/;
 const corsOptions = {
   origin: allowedOrigins,
@@ -42,6 +43,8 @@ cron.schedule('0 0 0 * * *', async () => {
   try {
     console.log("Fetching pricing data...");
     await fetchPrices;
+    console.log("Fetching sizes data...");
+    await fetchSizes;
   } catch (error) {
     console.error(error);
   }
@@ -49,6 +52,7 @@ cron.schedule('0 0 0 * * *', async () => {
 
 async function initialCalls() {
 await fetchStock;
+await fetchSizes;
 await fetchPrices;
 }
 
