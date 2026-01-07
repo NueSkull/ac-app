@@ -15,6 +15,9 @@ const injectStockTable = async (csvJson) => {
     const interval = setInterval(function() {
         elapsedTime = Date.now() - startTime;
     }, 100);
+
+    // Something to note, i had to flip the stock_level and sku values below.. might need to revert if it goes back to normal?? ¯\_(ツ)_/¯
+
     await db.query(format(`INSERT INTO stock_import (stock_level, sku) VALUES %L ON CONFLICT (sku) DO NOTHING;`, csvArrayd));
     clearInterval(interval)
     console.log(`Stock insertion finished after ${(elapsedTime / 1000).toFixed(3)} s`);

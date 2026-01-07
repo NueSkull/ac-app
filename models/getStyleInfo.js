@@ -1,6 +1,14 @@
 const db = require("../db/connection");
 const { getPricingF } = require('./pricinglogic');
 
+  const languageKeys = {
+  "en": ["en-GB", "GBP"],
+  "de": ["de-DE", "EUR"],
+  "fr": ["fr-FR", "EUR"],
+  "nl": ["nl-NL", "EUR"],
+  "ga": ["en-IE", "EUR"]
+  }
+
 exports.getStyleInfo = async (sku, brand, subdom, lang) => {
 
     let returningPrices = '';
@@ -84,7 +92,6 @@ async function qtyMarkups(qtys, prices) {
 
             if(subdom) {
                 const priceMatrix = await getPricingF(subdom);
-                console.log(priceMatrix)
 
                 if(brand) {
                     const filterForBrand = priceMatrix.filter((rule) => {
@@ -116,5 +123,8 @@ async function qtyMarkups(qtys, prices) {
                 }
             }
 
+
+            returningPrices.numFormat = languageKeys[lang][0];
+            returningPrices.currency = languageKeys[lang][1];
             return returningPrices;
 }
