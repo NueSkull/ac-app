@@ -10,15 +10,14 @@ const injectStockTable = async (csvJson) => {
         sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
     const csvArrayd = await jsonToArray(csvJson);
+    const csvArraydNoDIS = csvArrayd.filter(row => row[2] !== 'DIS').map(row => [row[0], row[1]]);
     const startTime = Date.now();
     let elapsedTime = '';
     const interval = setInterval(function() {
         elapsedTime = Date.now() - startTime;
     }, 100);
 
-    // Something to note, i had to flip the stock_level and sku values below.. might need to revert if it goes back to normal?? ¯\_(ツ)_/¯
-
-    await db.query(format(`INSERT INTO stock_import (stock_level, sku) VALUES %L ON CONFLICT (sku) DO NOTHING;`, csvArrayd));
+    await db.query(format(`INSERT INTO stock_import (sku, stock_level) VALUES %L ON CONFLICT (sku) DO NOTHING;`, csvArraydNoDIS));
     clearInterval(interval)
     console.log(`Stock insertion finished after ${(elapsedTime / 1000).toFixed(3)} s`);
     await db.query(`DROP TABLE IF EXISTS stock;`);
