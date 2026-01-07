@@ -30,7 +30,7 @@ app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
 })
 
-cron.schedule('0 */5 * * * *', async () => {
+cron.schedule('0 2,12,22,32,42,52 * * * *', async () => {
   try {
     console.log("Fetching stock data...");
     await fetchStock;
