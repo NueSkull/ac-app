@@ -10,7 +10,6 @@ const injectStockTable = async (csvJson) => {
         sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
     const csvArrayd = await jsonToArray(csvJson);
-    console.log(csvJson);
     const startTime = Date.now();
     let elapsedTime = '';
     const interval = setInterval(function() {
