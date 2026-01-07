@@ -25,33 +25,6 @@ app.get("/api/getuser/:ac", getUser);
 app.get("/api/pricingrules/:ac", getPricing)
 app.post("/api/pricingrules/:ac", updatePricing);
 app.get("/api/getfromprice/:sku/:brand/:subdom/:lang", getFromPrice)
-app.get("/api/sync/stock", async (req, res) => {
-  try {
-    console.log("Manual stock sync started...");
-    await fetchStock;
-    res.send({msg: "Stock synced"});
-  } catch (err) {
-    res.status(500).send({error: err.message});
-  }
-});
-app.get("/api/sync/prices", async (req, res) => {
-  try {
-    console.log("Manual prices sync started...");
-    await fetchPrices;
-    res.send({msg: "Prices synced"});
-  } catch (err) {
-    res.status(500).send({error: err.message});
-  }
-});
-app.get("/api/sync/sizes", async (req, res) => {
-  try {
-    console.log("Manual sizes sync started...");
-    await fetchSizes;
-    res.send({msg: "Sizes synced"});
-  } catch (err) {
-    res.status(500).send({error: err.message});
-  }
-});
 
 app.all('/*path', (err, req, res, next) => {
   res.status(404).send({msg: "Invalid prompt"})
