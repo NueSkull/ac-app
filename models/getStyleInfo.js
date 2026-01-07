@@ -123,8 +123,5 @@ async function qtyMarkups(qtys, prices) {
                 }
             }
 
-
-            returningPrices.styleInfo.numFormat = languageKeys[lang][0];
-            returningPrices.styleInfo.currency = languageKeys[lang][1];
             return returningPrices;
 }
