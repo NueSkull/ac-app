@@ -14,7 +14,7 @@ const config = {
 console.log("Prices being retrieved");
 
 client.on('ready', () => {
-    const remoteDir = '/Customer Data/AF051/Prices/';
+    const remoteDir = '/Web Files/Apparel Catalogue/';
 
     client.list(remoteDir, async (err, list) => {
         if (err) {
@@ -23,7 +23,7 @@ client.on('ready', () => {
             return;
         }
 
-        const priceFiles = list.filter(file => file.name.includes('price_list') && file.type === '-');
+        const priceFiles = list.filter(file => file.name.includes('ap_catalogue_prices') && file.type === '-');
 
         for (const file of priceFiles) {
             const remotePath = `${remoteDir}${file.name}`;
