@@ -14,7 +14,7 @@ const config = {
 console.log("Prices being retrieved");
 
 client.on('ready', () => {
-    const remoteDir = '/Web Files/Apparel Catalogue/';
+    const remoteDir = '/Web Files/ApparelCatalogue/';
 
     client.list(remoteDir, async (err, list) => {
         if (err) {
