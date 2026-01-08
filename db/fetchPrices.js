@@ -38,7 +38,7 @@ client.on('ready', () => {
 
                     writeStream.on('finish', async () => {
                         try {
-                            await storePrices(localPath, file.name);
+                            await storePrices(localPath, file.name.replace('ap_catalogue_prices', ''));
                             resolve();
                         } catch (e) {
                             reject(e);

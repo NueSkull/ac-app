@@ -4,18 +4,18 @@ const { getPricingF } = require("./pricinglogic");
 exports.getFromPrice = async (sku, brand, subdom, lang) => {
   console.log(`From price request - ${sku} - ${brand} - ${subdom} - ${lang}`);
 
+  const languageKeys = {
+  "en": ["en-GB", "GBP", "gbp"],
+  "de": ["de-DE", "EUR", "de"],
+  "fr": ["fr-FR", "EUR", "fr"],
+  "nl": ["nl-NL", "EUR", "nl"],
+  "ga": ["en-IE", "EUR", "eu"]
+  }
+
   const productPrice = await db.query(
-    `SELECT price FROM prices_${lang} WHERE LEFT(sku, 5) = $1;`,
+    `SELECT price FROM prices_${languageKeys[lang][2]} WHERE LEFT(sku, 5) = $1;`,
     [sku]
   );
-
-  const languageKeys = {
-  "en": ["en-GB", "GBP"],
-  "de": ["de-DE", "EUR"],
-  "fr": ["fr-FR", "EUR"],
-  "nl": ["nl-NL", "EUR"],
-  "ga": ["en-IE", "EUR"]
-  }
 
   let fromPrice = {"price": 999,
     "numFormat": languageKeys[lang][0],

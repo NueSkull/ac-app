@@ -6,11 +6,11 @@ async function seed() {
     await db.query('DROP TABLE IF EXISTS users;')
     await db.query('DROP TABLE IF EXISTS stock;')
     await db.query('DROP TABLE IF EXISTS sizes;')
-    await db.query('DROP TABLE IF EXISTS prices_en;')
+    await db.query('DROP TABLE IF EXISTS prices_gbp;')
     await db.query('DROP TABLE IF EXISTS prices_de;')
     await db.query('DROP TABLE IF EXISTS prices_fr;')
     await db.query('DROP TABLE IF EXISTS prices_nl;')
-    await db.query('DROP TABLE IF EXISTS prices_ire;')
+    await db.query('DROP TABLE IF EXISTS prices_eu;')
     
     await db.query(`CREATE TABLE users (
         subdom VARCHAR PRIMARY KEY,
@@ -46,8 +46,8 @@ async function seed() {
         sku VARCHAR PRIMARY KEY,
         stock_level VARCHAR);`);
 
-        
-    await db.query(`CREATE TABLE prices_en (
+
+    await db.query(`CREATE TABLE prices_gbp (
         sku VARCHAR PRIMARY KEY,
         primary_sku VARCHAR,
         price FLOAT(2)
@@ -71,7 +71,7 @@ async function seed() {
         price FLOAT(2)
         );`);
 
-    await db.query(`CREATE TABLE prices_ire (
+    await db.query(`CREATE TABLE prices_eu (
         sku VARCHAR PRIMARY KEY,
         primary_sku VARCHAR,
         price FLOAT(2)
