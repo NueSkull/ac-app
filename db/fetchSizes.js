@@ -14,7 +14,7 @@ const config = {
   console.log("Sizes being retrieved");
 
 client.on('ready', () => {
-    const remotePath = '/Customer Data/AF051/Sizes/apc_sizes.csv';
+    const remotePath = '/Web Files/ApparelCatalogue/ap_catalogue_sizes.csv';
     const localPath = './size_update.csv';
 
     client.get(remotePath, (err, stream) => {
