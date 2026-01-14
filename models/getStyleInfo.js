@@ -1,15 +1,28 @@
 const db = require("../db/connection");
 const { getPricingF } = require('./pricinglogic');
 
+
+
   const languageKeys = {
   "en": ["en-GB", "GBP", "gbp"],
   "de": ["de-DE", "EUR", "de"],
   "fr": ["fr-FR", "EUR", "fr"],
-  "nl": ["nl-NL", "EUR", "nl"],
-  "ga": ["en-IE", "EUR", "eu"]
+  "nl": ["nl-NL", "EUR", "nl"]
   }
 
-exports.getStyleInfo = async (sku, brand, subdom, lang) => {
+  function currencyKeys(lang, curr) {
+    if(languageKeys[lang][1] === curr) {
+        return languageKeys[lang][2];
+    } else {
+        if(curr === "GBP") {
+            return "gbp";
+        } else {
+            return "eu";
+        }
+    }
+ }
+
+exports.getStyleInfo = async (sku, brand, subdom, lang, curr) => {
 
     let returningPrices = '';
 
@@ -81,7 +94,7 @@ async function qtyMarkups(qtys, prices) {
             const query = `
                 SELECT s.size_value, a.stock_level, p.price 
                 FROM stock AS a
-                JOIN prices_${languageKeys[lang][2]} AS p ON a.sku = p.sku 
+                JOIN prices_${currencyKeys(lang, curr)} AS p ON a.sku = p.sku 
                 JOIN sizes AS s ON a.sku = s.sku 
                 WHERE s.primary_sku = $1
                 ORDER BY s.alpha_order ASC;

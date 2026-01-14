@@ -1,26 +1,44 @@
 const db = require("../db/connection");
 const { getPricingF } = require("./pricinglogic");
 
-exports.getFromPrice = async (sku, brand, subdom, lang) => {
+exports.getFromPrice = async (sku, brand, subdom, lang, curr) => {
   console.log(`From price request - ${sku} - ${brand} - ${subdom} - ${lang}`);
+
 
   const languageKeys = {
   "en": ["en-GB", "GBP", "gbp"],
   "de": ["de-DE", "EUR", "de"],
   "fr": ["fr-FR", "EUR", "fr"],
-  "nl": ["nl-NL", "EUR", "nl"],
-  "ga": ["en-IE", "EUR", "eu"]
+  "nl": ["nl-NL", "EUR", "nl"]
   }
-
-  const productPrice = await db.query(
-    `SELECT price FROM prices_${languageKeys[lang][2]} WHERE LEFT(sku, 5) = $1;`,
-    [sku]
-  );
 
   let fromPrice = {"price": 999,
     "numFormat": languageKeys[lang][0],
     "currency": languageKeys[lang][1]
   };
+
+  function currencyKeys(lang, curr) {
+    if(languageKeys[lang][1] === curr) {
+        return languageKeys[lang][2];
+    } else {
+        if(curr === "GBP") {
+        fromPrice.numFormat = languageKeys["en"][0];
+        fromPrice.currency = languageKeys["en"][1];
+            return "gbp";
+        } else {
+        fromPrice.numFormat = "eu";
+        fromPrice.currency = "EUR"
+            return "eu";
+        }
+    }
+ }
+
+  const productPrice = await db.query(
+    `SELECT price FROM prices_${currencyKeys(lang, curr)} WHERE LEFT(sku, 5) = $1;`,
+    [sku]
+  );
+
+
 
   // Get initial from price before any logic
 

@@ -1,7 +1,7 @@
 const { getStyleInfo } = require('../models/getStyleInfo')
 
 exports.getStyleInfo = async (req, res, next) => {
-    const {sku, brand, subdom, lang} = req.params;
-    const styleInfo = await getStyleInfo(sku, brand, subdom, lang)
+    const {sku, brand, subdom, lang, curr} = req.params;
+    const styleInfo = await getStyleInfo(sku, brand, subdom, lang, curr)
     res.status(200).send({styleInfo});
 }
