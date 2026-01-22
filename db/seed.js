@@ -84,7 +84,7 @@ async function seed() {
     await db.query(`INSERT INTO user_lookup (c_account_number, subdom) VALUES ('EA051','marksempire');`)
 
     await db.query(`INSERT INTO pricing (customer, type, brand, low_break, high_break, percentage, personalisation, pretty_pricing) 
-        VALUES ('ac','Price','',0,999,200,0, false),
+        VALUES ('ac','Price','',0,999,100,0, false),
         ('marksempire','Brand','Anthem',5,15,5,5, false),
         ('marksempire','Price','',2.50,15.75,40,2.5, false),
         ('marksempire','Qty','',1,10,30,0.00, false);`)
