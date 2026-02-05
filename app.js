@@ -9,7 +9,7 @@ const {getFromPrice} = require('./controllers/getFromPrice')
 const {fetchStock} = require('./db/fetchStock')
 const {fetchPrices} = require('./db/fetchPrices')
 const {fetchSizes} = require('./db/fetchSizes')
-const allowedOrigins = /^https?:\/\/(?:(?:.+\.)?apparel-catalogue\.co\.uk|shop\.ralawise\.com)$/;
+const allowedOrigins = /^https?:\/\/(?:(?:.+\.)?apparel-catalogue(?:-.+)?\.co\.uk|shop\.ralawise\.com)$/;
 const corsOptions = {
   origin: allowedOrigins,
   optionsSuccessStatus: 200 
